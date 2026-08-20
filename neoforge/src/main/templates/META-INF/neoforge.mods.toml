@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Argorice/TeamPing/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "Argorice"
+logoFile = "assets/teamping/icon.png"
+displayURL = "https://github.com/Argorice/TeamPing"
+description = '''Co-op pings and waypoints. Mark a spot and your teammates see a marker in the world with the distance and an edge-of-screen arrow when it is off camera. English and Russian included.'''
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neo_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+# FTB Teams is optional. The mod talks to it through reflection and is perfectly
+# happy without it, falling back to the vanilla scoreboard.
+[[dependencies.${mod_id}]]
+modId = "ftbteams"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

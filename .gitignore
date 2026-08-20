@@ -1,0 +1,44 @@
+# --- сборка ---
+.gradle/
+build/
+out/
+bin/
+dist/
+repo/
+src/generated/
+
+# --- запуски ---
+run/
+runs/
+
+# --- логи и дампы JVM ---
+*.log
+hs_err_pid*.log
+replay_pid*.log
+
+# --- IDE ---
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+.vscode/
+local.properties
+
+# --- ОС ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- следы правок ---
+*.orig
+*.rej
+*.bak
+
+# --- моё, не для публикации ---
+local/
+promo/
+build-mod.bat
+ParseCheck.java

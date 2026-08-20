@@ -1,0 +1,26 @@
+# Единые переносы строк во всём репозитории.
+# Батникам нужен именно CRLF: cmd.exe с LF рубит команды на куски.
+* text=auto eol=lf
+
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+gradlew text eol=lf
+
+*.java       text diff=java
+*.gradle     text
+*.properties text
+*.json       text
+*.toml       text
+*.yml        text
+*.md         text
+*.py         text
+
+*.png binary
+*.jar binary
+*.ogg binary
+*.zip binary
+
+# Обёртка Gradle — чужой код, в статистике языков ему не место.
+gradlew           linguist-vendored
+gradlew.bat       linguist-vendored
+gradle/wrapper/** linguist-vendored
