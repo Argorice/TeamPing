@@ -2,6 +2,20 @@
 
 ## 1.0.1
 
+Changed: with no team system in play, a marker now goes to its author and nobody else.
+1.0.0 sent it to everyone within 512 blocks, which is fine among friends and wrong
+anywhere else.
+
+- The old behaviour is a switch at the bottom of the waypoint list, off by default. It
+  is per player, remembered between sessions, and only decides who sees that player's
+  own markers
+- `soloModeRadius` still sets the radius, but only for players who turned the switch on;
+  `teamProvider = "solo"` is unchanged and still applies to everybody
+- Pointing at a player when nobody has a team gives a plain named marker instead of a
+  red *Enemy* — with no teams there is nothing to tell apart
+
+## 1.0.0
+
 First public release. Minecraft 1.21.1, NeoForge.
 
 - Seven ping types: normal, danger, resource, waypoint, ally, enemy and vessel, each with
