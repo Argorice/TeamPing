@@ -5,6 +5,7 @@ import dev.teamping.ping.Ping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -20,8 +21,8 @@ import java.util.UUID;
 public class WaypointScreen extends Screen {
     private static final int LIST_TOP = 40;
     private static final int ROW_HEIGHT = 22;
-    /** Место под кнопку «Готово» и две строки легенды. */
-    private static final int BOTTOM_RESERVE = 62;
+    /** Место под галочку, кнопку «Готово» и две строки легенды. */
+    private static final int BOTTOM_RESERVE = 88;
 
     private int hidden = 0;
 
@@ -45,9 +46,29 @@ public class WaypointScreen extends Screen {
                     LIST_TOP + i * ROW_HEIGHT));
         }
 
+        addRenderableWidget(nearbyToggle());
+
         addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, button -> onClose())
                 .bounds(this.width / 2 - 100, this.height - 56, 200, 20)
                 .build());
+    }
+
+    /**
+     * Единственная настройка, которой здесь место: она про то, кто увидит метку,
+     * а это решается по ходу игры, а не один раз в конфиге.
+     */
+    private Button nearbyToggle() {
+        boolean on = NearbySharingClient.enabled();
+        Component label = Component.translatable("teamping.screen.nearby",
+                Component.translatable(on ? "teamping.screen.nearby.on" : "teamping.screen.nearby.off"));
+
+        return Button.builder(label, button -> {
+                    NearbySharingClient.toggle();
+                    rebuildWidgets();
+                })
+                .bounds(this.width / 2 - 130, this.height - 80, 260, 20)
+                .tooltip(Tooltip.create(Component.translatable("teamping.screen.nearby.tip")))
+                .build();
     }
 
     private Button rowFor(Ping waypoint, boolean own, int y) {
@@ -97,7 +118,7 @@ public class WaypointScreen extends Screen {
         } else if (this.hidden > 0) {
             graphics.drawCenteredString(this.font,
                     Component.translatable("teamping.screen.more", this.hidden),
-                    centre, this.height - 70, 0xFF888888);
+                    centre, this.height - 94, 0xFF888888);
         }
 
         graphics.drawCenteredString(this.font,

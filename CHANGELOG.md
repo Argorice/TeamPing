@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.0.0 — unreleased
+## 1.0.1
 
-First release. Minecraft 1.21.1, NeoForge.
+First public release. Minecraft 1.21.1, NeoForge.
 
 - Seven ping types: normal, danger, resource, waypoint, ally, enemy and vessel, each with
   its own icon and sound
@@ -17,6 +17,8 @@ First release. Minecraft 1.21.1, NeoForge.
   placed in, with a list screen on `Ctrl+Shift+Y`
 - Markers on Xaero's Minimap and World Map, if installed
 - FTB Teams and vanilla `/team` both count at once, not one instead of the other
+- With no team at all a marker is private to its author; a switch in the waypoint list
+  shares it with everyone nearby instead, off by default
 - API for other mods in `dev.teamping.api`
 - Client and server configs as plain JSON
 - English and Russian

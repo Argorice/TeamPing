@@ -46,6 +46,7 @@ public final class TeamPingClient {
         Minecraft minecraft = Minecraft.getInstance();
         PingStore.tick(minecraft);
         PingKeybinds.tick(minecraft);
+        NearbySharingClient.tick();
     }
 
     private static void onRenderLevel(RenderLevelStageEvent event) {
@@ -61,6 +62,7 @@ public final class TeamPingClient {
 
     private static void onLoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
         ClientNetworking.reset();
+        NearbySharingClient.onLoggingIn();
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {

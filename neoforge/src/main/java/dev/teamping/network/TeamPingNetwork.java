@@ -44,6 +44,17 @@ public final class TeamPingNetwork {
                 }
         );
 
+        registrar.playToServer(
+                NearbySharingPayload.TYPE,
+                NearbySharingPayload.CODEC,
+                (payload, context) -> {
+                    if (context.player() instanceof ServerPlayer player) {
+                        context.enqueueWork(() ->
+                                dev.teamping.team.NearbySharing.set(player, payload.enabled()));
+                    }
+                }
+        );
+
         // Тела лямбд — именно лямбды, а не ссылки на методы: тогда клиентский
         // класс грузится в момент первого вызова, то есть только на клиенте.
         registrar.playToClient(

@@ -42,6 +42,18 @@ public final class ClientNetworking {
         PacketDistributor.sendToServer(payload);
     }
 
+    /**
+     * То же, но молча: нечего показывать «мод не установлен на сервере» из-за
+     * фоновой синхронизации настройки, о которой игрок не просил.
+     */
+    public static void sendQuietly(CustomPacketPayload payload) {
+        ClientPacketListener connection = Minecraft.getInstance().getConnection();
+        if (connection == null || !connection.hasChannel(payload.type())) {
+            return;
+        }
+        PacketDistributor.sendToServer(payload);
+    }
+
     private static void warnOnce(Minecraft minecraft) {
         if (warned || minecraft.gui == null) {
             return;

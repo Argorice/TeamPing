@@ -6,6 +6,7 @@ import dev.teamping.config.TeamPingConfig;
 import dev.teamping.network.PingBroadcastPayload;
 import dev.teamping.network.PlacePingPayload;
 import dev.teamping.network.TeamPingNetwork;
+import dev.teamping.team.NearbySharing;
 import dev.teamping.team.TeamProvider;
 import dev.teamping.team.TeamProviders;
 import dev.teamping.util.SableSupport;
@@ -45,11 +46,13 @@ public final class ServerPingManager {
 
     public static void reset() {
         LAST_PING.clear();
+        NearbySharing.reset();
         WaypointSync.reset();
     }
 
     public static void onPlayerQuit(ServerPlayer player) {
         LAST_PING.remove(player.getUUID());
+        NearbySharing.forget(player);
         WaypointSync.onPlayerQuit(player);
     }
 
@@ -161,6 +164,13 @@ public final class ServerPingManager {
             Vec3 centre = entity.getBoundingBox().getCenter();
             if (entity instanceof ServerPlayer other) {
                 // Свой или чужой — знание сервера, клиент об этом не спрашивают.
+                // Но если команд нет вообще, делить не на что: красить приятеля
+                // в красное «Противник» только потому, что команду никто не создал,
+                // было бы враньём. Тогда это просто метка с именем.
+                if (TeamProviders.get().teamIds(player).isEmpty()) {
+                    return new Target(centre, PingType.NORMAL,
+                            Component.literal(other.getGameProfile().getName()));
+                }
                 boolean ally = TeamProviders.get().isSameTeam(player, other);
                 return new Target(centre, ally ? PingType.ALLY : PingType.ENEMY,
                         Component.literal(other.getGameProfile().getName()));

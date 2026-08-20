@@ -36,7 +36,7 @@ is actually bound right now, so rebinding is reflected everywhere.
 src/main/java/dev/teamping/
 ├── TeamPing.java   @Mod, networking and server events
 ├── api/            public API for other mods
-├── network/        four payloads and their codecs
+├── network/        five payloads and their codecs
 ├── ping/           model, types, server-side manager
 ├── team/           TeamSource per system, merged by CompositeTeamProvider
 ├── config/         plain JSON, no config library
@@ -70,9 +70,10 @@ check before anyone had a chance to translate it back into the world.
 `ServerPingManager.resolveTarget` decides what was pinged, in this order:
 
 - **a Sable ship** → `VESSEL`, labelled with the ship name, positioned on the hull;
-- **a player** → `ALLY` or `ENEMY`, depending on `isSameTeam`. The client sends an entity
-  id and nothing else — who counts as a teammate is the server's business, so an edited
-  client can't paint an enemy blue;
+- **a player** → `ALLY` or `ENEMY`, depending on `isSameTeam`. The client says which
+  entity it was looking at and nothing more — who counts as a teammate is the server's
+  business, so an edited client can't paint an enemy blue. With no team at all the split
+  is meaningless, and it falls back to a plain named marker;
 - **any other entity** → a normal ping labelled with the entity name;
 - **nothing in particular** → the point as sent.
 
@@ -196,15 +197,28 @@ mapMarkers           all | waypoints | none
 maxPingDistance       256
 rateLimitMs           1000
 maxWaypointsPerPlayer 8
-soloModeRadius        512
+soloModeRadius        512   (only for players who turned the switch on)
 teamProvider          auto | ftb | scoreboard | solo
 ```
 
 Teams come from `TeamSource`s, and `CompositeTeamProvider` **adds them up** instead of
 picking one: teammates are the union, and two players are on one team if they share any
 source. Packs hand out teams twice often enough that choosing between FTB and the
-scoreboard was just wrong. If nothing reports a team, `SoloProvider` takes over with the
-radius.
+scoreboard was just wrong.
+
+If nothing reports a team, the ping goes to its author and nobody else — the same rule
+waypoints follow. `SoloProvider` and its radius are still there, but only for players who
+asked for them: `NearbySharing` holds that per-player flag, the client sends it on join and
+on every toggle, and it lives in the client config so it survives a relog. The switch is in
+the waypoint list rather than a config file, because "who sees this" is a decision people
+make mid-game.
+
+It is off by default on purpose. "Everyone within 512 blocks" sounds friendly on a server
+with four friends on it and means "strangers over the next hill" on any other.
+
+One consequence worth knowing: with no team at all, pointing at a player gives a plain
+named marker instead of Ally or Enemy. Painting a mate red because nobody had created a
+team would be a lie, so the mod does not guess.
 
 One trap worth knowing: FTB keeps every player in a personal team even outside a party,
 so `FtbTeamSource.partyOf` filters by `isPartyTeam()` and returns null for those.
@@ -212,7 +226,8 @@ Without that filter vanilla `/team` would never get a turn on any server with FT
 installed — which is exactly the bug that made `/team` look broken.
 
 `teamProvider` in the server config narrows this down: `ftb` or `scoreboard` for one
-source only, `solo` to ignore teams entirely.
+source only, `solo` to ignore teams entirely — that last one is a deliberate server-wide
+choice, so it hands out the radius to everybody and ignores the per-player switch.
 
 Missing or broken files fall back to defaults and get rewritten.
 

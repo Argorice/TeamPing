@@ -54,6 +54,10 @@
   "teamping.screen.empty": "Вейпоинтов пока нет.",
   "teamping.screen.empty.hint": "Обычные пинги сюда не попадают.",
   "teamping.screen.more": "...и ещё %s",
+  "teamping.screen.nearby": "Без команды: показывать метки тем, кто рядом — %s",
+  "teamping.screen.nearby.on": "вкл",
+  "teamping.screen.nearby.off": "выкл",
+  "teamping.screen.nearby.tip": "По умолчанию выключено. Без команды метка видна только тебе, как вейпоинт. С галочкой её увидят все в радиусе, который задаёт сервер. Пока ты в команде, это ни на что не влияет.",
   "teamping.screen.legend.1": "%s — пинг   ·   %s — опасность",
   "teamping.screen.legend.2": "%s — вейпоинт   ·   %s — убрать ближайший"
 }

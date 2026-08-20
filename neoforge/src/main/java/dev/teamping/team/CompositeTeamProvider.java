@@ -17,8 +17,9 @@ import java.util.Set;
  * сокомандники увидят метку в обоих случаях. Поэтому состав команды здесь это
  * объединение, а «одна команда» означает пересечение хотя бы по одному источнику.
  *
- * <p>Если ни один источник команды не нашёл, работает {@link SoloProvider}:
- * все в радиусе, цвет по хешу ника.
+ * <p>Если команды нет ни в одном источнике, метку видит только автор. Раздача
+ * «всем, кто рядом» — это {@link SoloProvider}, и он включается лишь тем, кто сам
+ * попросил: {@link NearbySharing}. Цвет в этом случае берётся по хешу ника.
  */
 public final class CompositeTeamProvider implements TeamProvider {
     private final List<TeamSource> sources;
@@ -35,7 +36,10 @@ public final class CompositeTeamProvider implements TeamProvider {
             result.addAll(source.members(player));
         }
         if (result.isEmpty()) {
-            return solo.teammates(player);
+            // Команды нет — метку видит только автор. Радиус включается вручную
+            // галочкой в меню меток, потому что «все, кто рядом» на общем сервере
+            // означает «незнакомцы за соседним холмом».
+            return NearbySharing.isOn(player) ? solo.teammates(player) : List.of(player);
         }
         // Свою метку игрок видит всегда, даже если источник забыл его перечислить.
         result.add(player);
@@ -46,7 +50,7 @@ public final class CompositeTeamProvider implements TeamProvider {
     public boolean isSameTeam(ServerPlayer a, ServerPlayer b) {
         Set<String> mine = teamIds(a);
         if (mine.isEmpty()) {
-            return solo.isSameTeam(a, b);
+            return NearbySharing.isOn(a) && solo.isSameTeam(a, b);
         }
         for (String id : teamIds(b)) {
             if (mine.contains(id)) {

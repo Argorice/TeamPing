@@ -27,6 +27,9 @@ Aim and press the key — the mod works out what you meant.
 
 `Shift + Y` marks danger instead: red, and it sounds like it.
 
+Ally and Enemy only apply when you are actually in a team. Without one there is nobody
+to tell apart, so pointing at a player just gives a marker with their name on it.
+
 `Ctrl + Y` leaves a waypoint. Those do not fade — they stay until you take them down, they
 survive a restart, and your team sees them too. Someone who joins the team later still
 sees the ones placed before they arrived. `Ctrl + Shift + Y` opens the list of them.
@@ -58,7 +61,9 @@ If you happen to have any of these, the mod notices and uses them:
 | Xaero's Minimap | markers also show up on the minimap and the world map |
 | Create Aeronautics | ships can be marked, and the marker sticks to the hull |
 
-Without any of them, markers go to everyone within 512 blocks.
+Without any of them, a marker is yours alone — the same rule waypoints follow. If you do
+want everyone nearby to see them, there is a switch in the waypoint list; it is off until
+you turn it on.
 
 Both team systems count at the same time. Packs often hand out teams twice — a party *and*
 a scoreboard team — and your marker should reach your mates either way. Two players are on
@@ -75,8 +80,8 @@ edge arrows, sound volume, whether the distance is shown, and whether markers go
 map.
 
 `teamping-server.json` is the server's rules: how far you can mark (256 blocks), how often
-(once a second), how many waypoints one player may keep (8), and which team system to
-trust.
+(once a second), how many waypoints one player may keep (8), how far "nearby" reaches for
+people who turned that switch on (512 blocks), and which team system to trust.
 
 ## For other mod authors
 

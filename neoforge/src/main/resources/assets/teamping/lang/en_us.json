@@ -54,6 +54,10 @@
   "teamping.screen.empty": "No waypoints yet.",
   "teamping.screen.empty.hint": "Regular pings are not listed here.",
   "teamping.screen.more": "...and %s more",
+  "teamping.screen.nearby": "No team: show my markers to players nearby — %s",
+  "teamping.screen.nearby.on": "on",
+  "teamping.screen.nearby.off": "off",
+  "teamping.screen.nearby.tip": "Off by default. Without a team a marker is yours alone, like a waypoint. Turn this on and anyone within the server's radius sees your markers. It changes nothing while you are in a team.",
   "teamping.screen.legend.1": "%s — ping   ·   %s — danger",
   "teamping.screen.legend.2": "%s — waypoint   ·   %s — remove nearest"
 }
